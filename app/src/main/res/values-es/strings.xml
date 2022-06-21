@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Caza Patos</string>
+    <string name="string_email">e-mail</string>
+    <string name="string_password">contraseña</string>
+    <string name="string_rememberme">Recordarme</string>
+    <string name="string_start">Empezar Juego</string>
+    <string name="string_register">Registrarme</string>
+</resources>

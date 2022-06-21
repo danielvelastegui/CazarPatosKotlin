@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Duck Hunter</string>
+    <string name="string_email">e-mail</string>
+    <string name="string_password">password</string>
+    <string name="string_rememberme">Remember me</string>
+    <string name="string_start">Start Game</string>
+    <string name="string_register">Register</string>
+</resources>
