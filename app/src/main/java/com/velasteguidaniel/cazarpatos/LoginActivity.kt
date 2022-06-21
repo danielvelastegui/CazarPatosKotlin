@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         }
         mediaPlayer= MediaPlayer.create(this, R.raw.title_screen)
         mediaPlayer.start()
+        mediaPlayer.isLooping = true
     }
 
     private fun ValidarDatosRequeridos():Boolean{
