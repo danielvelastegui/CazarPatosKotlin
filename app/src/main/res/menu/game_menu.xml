@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuItemNewGame"
+        android:orderInCategory="10"
+        android:title="@string/string_new_game"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemPlayOnline"
+        android:orderInCategory="20"
+        android:title="@string/string_play_online"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemExit"
+        android:orderInCategory="30"
+        android:title="@string/string_exit"
+        app:showAsAction="never"/>
+</menu>

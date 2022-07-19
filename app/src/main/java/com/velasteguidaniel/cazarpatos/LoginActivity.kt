@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -11,6 +12,7 @@ import com.velasteguidaniel.cazarpatos.Interfaces.FileHandler
 import com.velasteguidaniel.cazarpatos.storage_manager.EncryptedSharedPreferencesManager
 import com.velasteguidaniel.cazarpatos.storage_manager.FileExternalManager
 import com.velasteguidaniel.cazarpatos.storage_manager.SharedPreferencesManager
+import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
     lateinit var manejadorArchivo: FileHandler
@@ -58,6 +60,11 @@ class LoginActivity : AppCompatActivity() {
         mediaPlayer.isLooping = true
     }
 
+    private fun ValidarEmail(email:String):Boolean{
+        val pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
+    }
+
     private fun ValidarDatosRequeridos():Boolean{
         val email = editTextEmail.text.toString()
         val clave = editTextPassword.text.toString()
@@ -71,8 +78,13 @@ class LoginActivity : AppCompatActivity() {
             editTextPassword.requestFocus()
             return false
         }
-        if (clave.length < 3) {
-            editTextPassword.setError("La clave debe tener al menos 3 caracteres")
+        if(!ValidarEmail(email)){
+            editTextEmail.setError("El email ingresado no es válido")
+            editTextEmail.requestFocus()
+            return false
+        }
+        if (clave.length < 8) {
+            editTextPassword.setError("La clave debe tener al menos 8 caracteres")
             editTextPassword.requestFocus()
             return false
         }

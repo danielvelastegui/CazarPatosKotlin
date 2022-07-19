@@ -6,4 +6,7 @@
     <string name="string_rememberme">Recordarme</string>
     <string name="string_start">Empezar Juego</string>
     <string name="string_register">Registrarme</string>
+    <string name="string_new_game">Nuevo Juego</string>
+    <string name="string_play_online">Juegar Online</string>
+    <string name="string_exit">Salir</string>
 </resources>

@@ -5,4 +5,7 @@
     <string name="string_rememberme">Remember me</string>
     <string name="string_start">Start Game</string>
     <string name="string_register">Register</string>
+    <string name="string_new_game">New Game</string>
+    <string name="string_play_online">Play Online</string>
+    <string name="string_exit">Exit</string>
 </resources>

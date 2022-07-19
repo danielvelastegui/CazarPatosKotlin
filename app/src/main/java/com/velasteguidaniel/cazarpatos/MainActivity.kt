@@ -1,10 +1,14 @@
 package com.velasteguidaniel.cazarpatos
 
+import android.app.SearchManager
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -15,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var textViewContador: TextView
     lateinit var textViewTiempo: TextView
     lateinit var imageViewPato: ImageView
+    lateinit var usuario:String
     var contador = 0
     var anchoPantalla = 0
     var alturaPantalla = 0
@@ -30,8 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         //Obtener el usuario de pantalla login
         val extras = intent.extras ?: return
-        val usuario = extras.getString(EXTRA_LOGIN) ?:"Unknown"
-        textViewUsuario.setText(usuario)
+        usuario = extras.getString(EXTRA_LOGIN) ?:"Unknown"
+        val nombre_usuario = usuario.split("@")[0]
+        textViewUsuario.setText(nombre_usuario)
 
         //Determina el ancho y largo de pantalla
         inicializarPantalla()
@@ -87,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogoGameOver() {
         val builder = AlertDialog.Builder(this)
         builder
+            .setIcon(R.drawable.ic__celebration)
             .setMessage("Felicidades!!\nHas conseguido cazar $contador patos")
             .setTitle("Fin del juego")
             .setPositiveButton("Reiniciar"
@@ -106,6 +113,37 @@ class MainActivity : AppCompatActivity() {
         textViewContador.setText(contador.toString())
         moverPato()
         inicializarCuentaRegresiva()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.game_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menuItemNewGame -> {
+                reiniciarJuego()
+                return true
+            }
+            R.id.menuItemPlayOnline -> {
+                val webIntent = Intent(Intent.ACTION_WEB_SEARCH)
+                webIntent.putExtra(SearchManager.QUERY, "https://duckhuntjs.com/")
+                startActivity(webIntent)
+                finish()
+                return true
+            }
+            R.id.menuItemExit -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onPause() {
+        contadorTiempo.cancel()
+        super.onPause()
     }
 }
 
