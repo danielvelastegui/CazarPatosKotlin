@@ -133,6 +133,12 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 return true
             }
+            R.id.action_ranking -> {
+                val rankingIntent = Intent(this, RankingActivity::class.java)
+                startActivity(rankingIntent)
+                finish()
+                return true
+            }
             R.id.menuItemExit -> {
                 finish()
                 true
