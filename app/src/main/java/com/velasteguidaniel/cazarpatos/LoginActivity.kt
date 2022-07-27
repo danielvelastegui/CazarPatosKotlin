@@ -4,15 +4,17 @@ import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.velasteguidaniel.cazarpatos.Interfaces.FileHandler
-import com.velasteguidaniel.cazarpatos.storage_manager.EncryptedSharedPreferencesManager
 import com.velasteguidaniel.cazarpatos.storage_manager.FileExternalManager
-import com.velasteguidaniel.cazarpatos.storage_manager.SharedPreferencesManager
-import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
     lateinit var manejadorArchivo: FileHandler
@@ -22,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var buttonNewUser:Button
     lateinit var mediaPlayer:MediaPlayer
     lateinit var chechBoxRecordarme: CheckBox
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +33,14 @@ class LoginActivity : AppCompatActivity() {
 //        manejadorArchivo = SharedPreferencesManager(this) // Datos sin encriptar
 //        manejadorArchivo = EncryptedSharedPreferencesManager(this) // Datos encriptados
         manejadorArchivo = FileExternalManager(this) // Archivo externo
-        editTextEmail = findViewById(R.id.editTextEmail)
-        editTextPassword = findViewById(R.id.editTextPassword)
+        editTextEmail = findViewById(R.id.editTextEmailRegister)
+        editTextPassword = findViewById(R.id.editTextPasswordRegister)
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonNewUser = findViewById(R.id.buttonNewUser)
         chechBoxRecordarme = findViewById(R.id.checkBoxRecordarme)
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+
         // Leer datos
         leerDatosDePreferencias()
         //Eventos clic
@@ -47,18 +53,35 @@ class LoginActivity : AppCompatActivity() {
             if(chechBoxRecordarme.isChecked){
                 guardarDatosEnPreferencias()
             }
-            //Si pasa validación de datos requeridos, ir a pantalla principal
-            val intencion = Intent(this, MainActivity::class.java)
-            intencion.putExtra(EXTRA_LOGIN, email)
-            startActivity(intencion)
+            AutenticarUsuario(email, clave)
         }
         buttonNewUser.setOnClickListener{
-
+            val registerIntent = Intent(this, RegisterActivity::class.java)
+            startActivity(registerIntent)
         }
         mediaPlayer= MediaPlayer.create(this, R.raw.title_screen)
         mediaPlayer.start()
         mediaPlayer.isLooping = true
     }
+
+    fun AutenticarUsuario(email:String, password:String){
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(EXTRA_LOGIN, "signInWithEmail:success")
+                    //Si pasa validación de datos requeridos, ir a pantalla principal
+                    val intencion = Intent(this, MainActivity::class.java)
+                    intencion.putExtra(EXTRA_LOGIN, auth.currentUser!!.email)
+                    startActivity(intencion)
+                    //finish()
+                } else {
+                    Log.w(EXTRA_LOGIN, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(baseContext, task.exception!!.message,
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
 
     private fun ValidarEmail(email:String):Boolean{
         val pattern = Patterns.EMAIL_ADDRESS

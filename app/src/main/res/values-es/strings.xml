@@ -9,4 +9,8 @@
     <string name="string_new_game">Nuevo Juego</string>
     <string name="string_play_online">Juegar Online</string>
     <string name="string_exit">Salir</string>
+    <string name="string_famous_hall">HALL DE FAMA</string>
+    <string name="string_pos">POS.</string>
+    <string name="string_ducks">Patos</string>
+    <string name="string_player">Jugador</string>
 </resources>

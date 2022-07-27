@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_game"
     android:padding="16dp"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <ImageView
         android:id="@+id/imageViewLogo"
@@ -50,44 +50,17 @@
         app:layout_constraintStart_toStartOf="@+id/editTextEmailRegister"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailRegister" />
 
-
-    <CheckBox
-        android:id="@+id/checkBoxRecordarme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/pixel"
-        android:text="@string/string_rememberme"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordRegister"
-        app:layout_constraintStart_toStartOf="@+id/editTextPasswordRegister"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordRegister" />
-
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonRegisterAndLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/pixel"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:text="@string/string_start"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/checkBoxRecordarme"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxRecordarme"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxRecordarme" />
-
-    <Button
-        android:id="@+id/buttonNewUser"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/pixel"
-        android:backgroundTint="@color/colorPrimaryLight"
         android:text="@string/string_register"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordRegister"
+        android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
