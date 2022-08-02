@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -85,6 +89,9 @@ class MainActivity : AppCompatActivity() {
             textViewTiempo.setText("0s")
             gameOver = true
             mostrarDialogoGameOver()
+            val nombreJugador = textViewUsuario.text.toString()
+            val patosCazados = textViewContador.text.toString()
+            procesarPuntajePatosCazados(nombreJugador, patosCazados.toInt())
         }
     }
     private fun inicializarCuentaRegresiva() {
@@ -150,6 +157,60 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         contadorTiempo.cancel()
         super.onPause()
+    }
+
+    fun procesarPuntajePatosCazados(nombreJugador:String, patosCazados:Int){
+        val jugador = Jugador(nombreJugador,patosCazados)
+        //Trata de obtener id del documento del ranking específico,
+        // si lo obtiene lo actualiza, caso contrario lo crea
+        val db = Firebase.firestore
+        db.collection("ranking")
+            .whereEqualTo("usuario", jugador.usuario)
+            .get()
+            .addOnSuccessListener { documents ->
+                if(documents!= null &&
+                    documents.documents != null &&
+                    documents.documents.count()>0
+                ){
+                    val idDocumento = documents.documents.get(0).id
+                    actualizarPuntajeJugador(idDocumento, jugador)
+                }
+                else{
+                    ingresarPuntajeJugador(jugador)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(EXTRA_LOGIN, "Error getting documents", exception)
+                Toast.makeText(this, "Error al obtener datos de jugador", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    fun ingresarPuntajeJugador(jugador:Jugador){
+        val db = Firebase.firestore
+        db.collection("ranking")
+            .add(jugador)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(this,"Puntaje usuario ingresado exitosamente", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(EXTRA_LOGIN, "Error adding document", exception)
+                Toast.makeText(this,"Error al ingresar el puntaje", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    fun actualizarPuntajeJugador(idDocumento:String, jugador:Jugador){
+        val db = Firebase.firestore
+        db.collection("ranking")
+            .document(idDocumento)
+            //.update(contactoHashMap)
+            .set(jugador) //otra forma de actualizar
+            .addOnSuccessListener {
+                Toast.makeText(this,"Puntaje de usuario actualizado exitosamente", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(EXTRA_LOGIN, "Error updating document", exception)
+                Toast.makeText(this,"Error al actualizar el puntaje" , Toast.LENGTH_LONG).show()
+            }
     }
 }
 
