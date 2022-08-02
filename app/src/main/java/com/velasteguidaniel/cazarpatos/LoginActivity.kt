@@ -13,6 +13,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.velasteguidaniel.cazarpatos.Interfaces.FileHandler
 import com.velasteguidaniel.cazarpatos.storage_manager.FileExternalManager
 
@@ -25,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var mediaPlayer:MediaPlayer
     lateinit var chechBoxRecordarme: CheckBox
     private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonNewUser = findViewById(R.id.buttonNewUser)
         chechBoxRecordarme = findViewById(R.id.checkBoxRecordarme)
+        storage = Firebase.storage
         // Initialize Firebase Auth
         auth = Firebase.auth
 

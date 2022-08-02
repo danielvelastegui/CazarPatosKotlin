@@ -14,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var textViewTiempo: TextView
     lateinit var imageViewPato: ImageView
     lateinit var usuario:String
+    private lateinit var database: DatabaseReference
     var contador = 0
     var anchoPantalla = 0
     var alturaPantalla = 0
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         textViewContador = findViewById(R.id.textViewContador)
         textViewTiempo = findViewById(R.id.textViewTiempo)
         imageViewPato = findViewById(R.id.imageViewPato)
+        database = Firebase.database.reference
 
         //Obtener el usuario de pantalla login
         val extras = intent.extras ?: return
@@ -92,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             val nombreJugador = textViewUsuario.text.toString()
             val patosCazados = textViewContador.text.toString()
             procesarPuntajePatosCazados(nombreJugador, patosCazados.toInt())
+            procesarPuntajePatosCazadosRTDB(nombreJugador, patosCazados.toInt())
         }
     }
     private fun inicializarCuentaRegresiva() {
@@ -157,6 +162,12 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         contadorTiempo.cancel()
         super.onPause()
+    }
+
+    fun procesarPuntajePatosCazadosRTDB(nombreJugador: String, patosCazados: Int){
+        val idJugador = nombreJugador.replace('.', '_')
+        val jugador = Jugador(nombreJugador,patosCazados)
+        database.child("ranking").child(idJugador).setValue(jugador)
     }
 
     fun procesarPuntajePatosCazados(nombreJugador:String, patosCazados:Int){
